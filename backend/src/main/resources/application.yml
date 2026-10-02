@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: erp-backend
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:erp_db}
+    username: ${DB_USER:erp}
+    password: ${DB_PASSWORD:erp123}
+  jpa:
+    hibernate:
+      ddl-auto: validate   # schema is owned by Flyway migrations, Hibernate only validates
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    # HS256 signing key -- override with a strong random value in production
+    secret: ${JWT_SECRET:erp-portfolio-demo-signing-key-change-me-in-production-0123456789}
+    access-expiration-ms: 900000      # 15 minutes - short-lived by design
+    refresh-expiration-ms: 604800000  # 7 days  - revocable, stored hashed in DB
+
+logging:
+  level:
+    com.erp: INFO

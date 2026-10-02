@@ -1,0 +1,11 @@
+#ERP System
+target/
+node_modules/
+dist/
+build/
+.env
+*.log
+.idea/
+.vscode/
+*.iml
+.DS_Store
