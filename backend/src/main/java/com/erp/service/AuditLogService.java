@@ -43,7 +43,16 @@ public class AuditLogService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
         String cleanEntity = (entityName != null && !entityName.isBlank()) ? entityName.trim() : null;
         String cleanAction = (action != null && !action.isBlank()) ? action.trim() : null;
-        return auditLogRepository.filter(cleanEntity, cleanAction, pageable);
+
+        if (cleanEntity != null && cleanAction != null) {
+            return auditLogRepository.findByEntityNameIgnoreCaseAndActionIgnoreCase(cleanEntity, cleanAction, pageable);
+        } else if (cleanEntity != null) {
+            return auditLogRepository.findByEntityNameIgnoreCase(cleanEntity, pageable);
+        } else if (cleanAction != null) {
+            return auditLogRepository.findByActionIgnoreCase(cleanAction, pageable);
+        } else {
+            return auditLogRepository.findAll(pageable);
+        }
     }
 
     private String getCurrentUser() {
